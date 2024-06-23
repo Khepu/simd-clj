@@ -9,16 +9,22 @@
 
 (def ^:const bit-sizes [64 128 256 512])
 
-(defn create-species-kw [class-name size]
-  (let [name (s/lower-case class-name)]
-    (keyword (str name "-" size))))
+(defn create-species-kw
+  "Returns a keyword in the form of `:int-256` when  given
+one of the `vector-types` and `bit-sizes`."
+  [class-name size]
+  (keyword (str (s/lower-case class-name) "-" size)))
 
-(defn create-species-enum [class-name size]
-  (symbol (str "jdk.incubator.vector." (str (name class-name) "Vector"))
+(defn create-species-enum
+  "Returns a namespaced symbol of a Vector species."
+  [class-name size]
+  (symbol (str "jdk.incubator.vector." (str class-name "Vector"))
           (str "SPECIES_" size)))
 
-(defn create-species-fn [class-name fn-name]
-  (symbol (str "jdk.incubator.vector." (str (name class-name) "Vector"))
+(defn create-species-fn
+  "Returns a namespaced symbol of a function for a given Vector species."
+  [class-name fn-name]
+  (symbol (str "jdk.incubator.vector." (str class-name "Vector"))
           (name fn-name)))
 
 (defn call-defop [name args vector-type size]
@@ -40,4 +46,4 @@
              size        bit-sizes]
          (call-defop name args vector-type size))))
 
-(defop broadcast [value])
+(defop broadcast [scalar])
