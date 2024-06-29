@@ -1,5 +1,10 @@
 (ns simd-clj.core
-  (:require [clojure.string :as s]))
+  (:require [clojure.string :as s])
+  (:import [jdk.incubator.vector Vector]
+           [jdk.incubator.vector VectorMask]
+           ;; This is was the JDK uses on all operators to make sure results
+           ;; stay in a register and don't get moved to memory.
+           [jdk.internal.vm.annotation ForceInline]))
 
 (set! *warn-on-reflection* true)
 
@@ -47,3 +52,15 @@ one of the `vector-types` and `bit-sizes`."
          (call-defop name args vector-type size))))
 
 (defop broadcast [scalar])
+
+(defn add
+  {ForceInline true}
+  ([^Vector vector scalar-or-vector ^VectorMask mask]
+   (.add vector scalar-or-vector mask))
+  ([^Vector vector scalar-or-vector]
+   (.add vector scalar-or-vector)))
+
+(defn abs
+  {ForceInline true}
+  [^Vector vector]
+  (.abs vector))
