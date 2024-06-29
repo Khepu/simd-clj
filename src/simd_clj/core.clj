@@ -16,13 +16,13 @@ one of the `vector-types` and `bit-sizes`."
 (defn create-species-enum
   "Returns a namespaced symbol of a Vector species."
   [class-name size]
-  (symbol (str "jdk.incubator.vector." (str class-name "Vector"))
+  (symbol (str "jdk.incubator.vector." class-name "Vector")
           (str "SPECIES_" size)))
 
 (defn create-species-fn
   "Returns a namespaced symbol of a function for a given Vector species."
   [class-name fn-name]
-  (symbol (str "jdk.incubator.vector." (str class-name "Vector"))
+  (symbol (str "jdk.incubator.vector." class-name "Vector")
           (name fn-name)))
 
 (defn call-defop [name args vector-type size]
