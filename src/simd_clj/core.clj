@@ -1,6 +1,4 @@
 (ns simd-clj.core
-  {:clj-kondo/config '{:lint-as {simd-clj.core/defop :defn}
-                       :indent-as {simd-clj.core/defop :defn}}}
   (:require [clojure.string :as s]))
 
 (set! *warn-on-reflection* true)
@@ -38,8 +36,10 @@ one of the `vector-types` and `bit-sizes`."
   `(defmulti ~name
      (fn [~@args ~'vec-type] ~'vec-type)))
 
-(defmacro defop [name args]
-  {:clj-kondo/ignore [:unresolved-symbol]}
+(defmacro defop
+  {:clj-kondo/ignore [:unresolved-symbol]
+   :clj-kondo/lint-as 'clojure.core/def}
+  [name args]
   `(do
      ~(call-defop-multi name args)
      ~@(for [vector-type vector-types
